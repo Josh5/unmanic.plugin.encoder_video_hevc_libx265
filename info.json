@@ -1,0 +1,12 @@
+{
+    "author": "Josh.5",
+    "compatibility": [
+        1
+    ],
+    "description": "Ensure all video streams are encoded with the H265/HEVC codec using the libx265 encoder.",
+    "icon": "",
+    "id": "encoder_video_hevc_libx265",
+    "name": "Video Encoder H265/HEVC - libx265",
+    "tags": "video,encoder,ffmpeg",
+    "version": "0.0.1"
+}
