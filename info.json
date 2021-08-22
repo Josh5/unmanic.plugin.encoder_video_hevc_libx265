@@ -7,6 +7,10 @@
     "icon": "https://raw.githubusercontent.com/Josh5/unmanic.plugin.encoder_video_hevc_libx265/master/icon.png",
     "id": "encoder_video_hevc_libx265",
     "name": "Video Encoder H265/HEVC - libx265",
+    "priorities": {
+        "on_library_management_file_test": 99,
+        "on_worker_process": 0
+    },
     "tags": "video,encoder,ffmpeg",
-    "version": "0.0.1"
+    "version": "0.0.2"
 }
