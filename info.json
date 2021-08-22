@@ -4,7 +4,7 @@
         1
     ],
     "description": "Ensure all video streams are encoded with the H265/HEVC codec using the libx265 encoder.",
-    "icon": "",
+    "icon": "https://raw.githubusercontent.com/Josh5/unmanic.plugin.encoder_video_hevc_libx265/master/icon.png",
     "id": "encoder_video_hevc_libx265",
     "name": "Video Encoder H265/HEVC - libx265",
     "tags": "video,encoder,ffmpeg",
