@@ -41,6 +41,8 @@ class Settings(PluginSettings):
         "main_options":          "",
         "advanced_options":      "",
         "custom_options":        "",
+        "keep_container":        True,
+        "dest_container":        "mkv",
     }
 
     def __init__(self):
@@ -54,6 +56,10 @@ class Settings(PluginSettings):
             "main_options":          self.__set_main_options_form_settings(),
             "advanced_options":      self.__set_advanced_options_form_settings(),
             "custom_options":        self.__set_custom_options_form_settings(),
+            "keep_container":        {
+                "label": "Keep the same container",
+            },
+            "dest_container":        self.__set_destination_container(),
         }
 
     def __set_max_muxing_queue_size_form_settings(self):
@@ -153,6 +159,33 @@ class Settings(PluginSettings):
             "input_type": "textarea",
         }
         if not self.get_setting('advanced'):
+            values["display"] = 'hidden'
+        return values
+
+    def __set_destination_container(self):
+        values = {
+            "label":      "Set the output container",
+            "input_type":     "select",
+            "select_options": [
+                {
+                    'value': "mkv",
+                    'label': ".mkv - Matroska",
+                },
+                {
+                    'value': "avi",
+                    'label': ".avi - AVI (Audio Video Interleaved)",
+                },
+                {
+                    'value': "mov",
+                    'label': ".mov - QuickTime / MOV",
+                },
+                {
+                    'value': "mp4",
+                    'label': ".mp4 - MP4 (MPEG-4 Part 14)",
+                },
+            ],
+        }
+        if self.get_setting('keep_container'):
             values["display"] = 'hidden'
         return values
 
@@ -266,7 +299,7 @@ def on_worker_process(data):
             data['exec_command'] += settings.get_setting('main_options').split()
 
         # Add file in
-        data['exec_command'] += ['-i', data.get('file_in')]
+        data['exec_command'] += ['-i', abspath]
 
         if settings.get_setting('advanced'):
             data['exec_command'] += settings.get_setting('advanced_options').split()
@@ -277,10 +310,14 @@ def on_worker_process(data):
         data['exec_command'] += mapper.get_stream_mapping()
         data['exec_command'] += mapper.get_stream_encoding()
 
-        # Do not remux the file. Keep the file out in the same container
-        split_file_in = os.path.splitext(data.get('file_in'))
         split_file_out = os.path.splitext(data.get('file_out'))
-        data['file_out'] = "{}{}".format(split_file_out[0], split_file_in[1])
+        if settings.get_setting('keep_container'):
+            # Do not remux the file. Keep the file out in the same container
+            split_file_in = os.path.splitext(abspath)
+            data['file_out'] = "{}{}".format(split_file_out[0], split_file_in[1])
+        else:
+            # Force the remux to the configured container
+            data['file_out'] = "{}.{}".format(split_file_out[0], settings.get_setting('dest_container'))
 
         data['exec_command'] += ['-y', data.get('file_out')]
 
