@@ -26,7 +26,7 @@ import os
 
 from unmanic.libs.unplugins.settings import PluginSettings
 
-from lib.ffmpeg import StreamMapper, Probe, Parser
+from encoder_video_hevc_libx265.lib.ffmpeg import StreamMapper, Probe, Parser
 
 # Configure plugin logger
 logger = logging.getLogger("Unmanic.Plugin.encoder_video_hevc_libx265")
